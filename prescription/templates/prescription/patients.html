@@ -1,0 +1,102 @@
+{% extends "prescription/base.html" %}
+
+{% block content %}
+<!-- Icon Cards-->
+    <div class="row">
+        <div class="col-xl-3 col-sm-6 mb-3">
+            <div class="card text-white bg-warning o-hidden h-100">
+                <div class="card-body">
+                    <div class="mr-5">
+                        Patients:<h3>{{total_patients}}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-3">
+            <div class="card text-white bg-primary o-hidden h-100">
+                <div class="card-body">
+                    <div class="mr-5">
+                        Female Patients:<h3>{{female_patients}}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-3">
+            <div class="card text-white bg-success o-hidden h-100">
+                <div class="card-body">
+                    <div class="mr-5">
+                        Male Patients:<h3>{{male_patients}}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DataTables Card-->
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fa fa-table"></i>
+            Patients
+        </div>
+        <div class="card-body">
+            <a class="btn btn-primary mb-2" href="{% url 'patients-create' %}">Add Patient</a>
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Gender</th>
+                            <th>Age</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Gender</th>
+                            <th>Age</th>
+                            <th>Action</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for patient in patients %}
+                            <tr>
+                                <td>{{patient.first_name}}</td>
+                                <td>{{patient.last_name}}</td>
+                                <td>{{patient.gender}}</td>
+                                <td>{{patient.age}}</td>
+                                <td>
+                                    <a class="btn btn-primary" href="{% url 'patients-update' patient.id %}"><i class="fa fa-pencil"></i></a>
+                                    <a class="btn btn-danger" data-toggle="modal" data-target="#ModalDelete" href=""><i class="fa fa-trash"></i></a>
+                                </td>
+                            </tr>
+
+                            <!-- Delete Modal-->
+                            <div class="modal fade" id="ModalDelete" tabindex="-1" role="dialog" aria-labelledby="ModalDelete" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="ModalDelete">Are you sure you want to delete?</h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Select "Delete" to remove the selected record.
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                            <a class="btn btn-danger" href="{% url 'patients-delete' patient.id %}">Delete</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

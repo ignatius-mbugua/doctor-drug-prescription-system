@@ -1,0 +1,173 @@
+{% extends "prescription/base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-6">
+            <!-- Pie Chart Card-->
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fa fa-bar-chart"></i>
+                    Tuberculosis Medicine
+                </div>
+                <div class="card-body">
+                    <canvas id="tuberculosis_pie_chart" width="100" height="70"></canvas>
+                </div>
+                <div class="card-footer small text-muted">
+                    <a href="{% url 'print-tuberculosis-medicine-chart' %}" target="_blank">Print Report</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <!-- Pie Chart Card-->
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fa fa-bar-chart"></i>
+                    Malaria Medicine
+                </div>
+                <div class="card-body">
+                    <canvas id="malaria_pie_chart" width="100" height="70"></canvas>
+                </div>
+                <div class="card-footer small text-muted">
+                    <a href="{% url 'print-malaria-medicine-chart' %}" target="_blank">Print Report</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <!-- Pie Chart Card-->
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fa fa-pie-chart"></i>
+                    Gender
+                </div>
+                <div class="card-body">
+                    <canvas id="gender_pie_chart" width="100" height="70"></canvas>
+                </div>
+                <div class="card-footer small text-muted">
+                    <a href="{% url 'print-gender-chart' %}" target="_blank">Print Report</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block script %}
+    <script src="{% static 'prescription/vendor/chart.js/Chart.bundle.min.js' %}"></script>
+    <script src="{% static 'prescription/vendor/chart.js/Chart.min.js' %}"></script>
+    <script>
+        //fetch data and initialize arrays
+        var gender_url_data = "{% url 'gender-data' %}"
+        var malaria_url_data = "{% url 'malaria-medicine-data' %}"
+        var tuberculosis_url_data = "{% url 'tuberculosis-medicine-data' %}"
+        var gender_count = [];
+        var malaria_count = [];
+        var tuberculosis_count = [];
+
+
+        $(document).ready(function(){
+            //Gender Pie Chart
+            $.ajax({
+                method: "GET",
+                url: gender_url_data,
+                success: function(data){
+                    gender_count = data.gender_count
+                    genderPieChart()
+                },
+                error: function(error_data){
+                    console.log("Error:")
+                    console.log(error_data)
+                }
+            })
+
+            function genderPieChart(){
+                new Chart(document.getElementById("gender_pie_chart"), {
+                    type: 'pie',
+                    data: {
+                        labels: ["Female", "Male"],
+                        datasets: [{
+                            label: "Gender",
+                            backgroundColor: ["#3e95cd", "#8e5ea2"],
+                            data: gender_count
+                        }]
+                    },
+                    options: {
+                        title: {
+                            display: true,
+                            text: 'Patient Gender'
+                        }
+                    }
+                });
+            }
+
+            //Malaria Medicine Pie Chart
+            $.ajax({
+                method: "GET",
+                url: malaria_url_data,
+                success: function(data){
+                    malaria_count = data.malaria_count
+                    malariaChart()
+                },
+                error: function(error_data){
+                    console.log("Error:")
+                    console.log(error_data)
+                }
+            })
+
+            function malariaChart(){
+                new Chart(document.getElementById("malaria_pie_chart"), {
+                    type: 'pie',
+                    data: {
+                        labels: ["Doxycycline", "Lariam", "Malarone"],
+                        datasets: [{
+                            label: "Malaria Medicine",
+                            backgroundColor: ["#3e95cd", "#8e5ea2", "#000000"],
+                            data: malaria_count
+                        }]
+                    },
+                    options: {
+                        title: {
+                            display: true,
+                            text: 'Distribution of Malaria Medicine Given'
+                        }
+                    }
+                });
+            }
+
+            //Tuberculosis Medicine Pie Chart
+            $.ajax({
+                method: "GET",
+                url: tuberculosis_url_data,
+                success: function(data){
+                    tuberculosis_count = data.tuberculosis_count
+                    tuberculosisChart()
+                },
+                error: function(error_data){
+                    console.log("Error:")
+                    console.log(error_data)
+                }
+            })
+
+            function tuberculosisChart(){
+                new Chart(document.getElementById("tuberculosis_pie_chart"), {
+                    type: 'pie',
+                    data: {
+                        labels: ["Rifater", "Ethambutol", "Isoniazid"],
+                        datasets: [{
+                            label: "Tuberculosis Medicine",
+                            backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f"],
+                            data: tuberculosis_count
+                        }]
+                    },
+                    options: {
+                        title: {
+                            display: true,
+                            text: 'Distribution of Tuberculosis Medicine Given'
+                        }
+                    }
+                });
+            }
+
+        }); //document.ready()
+
+    </script>
+{% endblock script%}

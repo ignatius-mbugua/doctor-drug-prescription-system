@@ -1,0 +1,57 @@
+{% extends "prescription/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <!-- All Patient details card-->
+        <div class="card mx-auto">
+            <div class="card-header">
+                All Patient Details
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p><b>First name: </b> {{pt_record.patient.first_name}}</p>
+                        <p><b>Second name:</b>{{pt_record.patient.last_name}}</p>
+                        <p><b>Age:</b> {{pt_record.patient.age}}</p>
+                        <p><b>Gender:</b>{{pt_record.patient.gender}}</p>
+                        <p><b>Weight(kg):</b>{{pt_record.weight_in_kg}} kg</p>
+                        <p><b>Pregnancy:</b>{{pt_record.pregnant}}</p>
+                        <p><b>Breast Feeding:</b>{{pt_record.breast_feeding}}</p>
+                        <p><b>Alcoholic:</b>{{pt_record.alcoholic}}</p>
+                        <p><b>Liver disease:</b>{{pt_record.liver_disease}}</p>
+                        <p><b>Eye Disease:</b>{{pt_record.eye_disease}}</p>
+                        <p><b>Kidney Disease:</b>{{pt_record.kidney_disease}}</p>
+                        <p><b>Diabetes:</b>{{pt_record.diabetes}}</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <!-- Model Tree card-->
+        <div class="card mx-auto">
+            <div class="card-header">
+                Model Tree
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><b>Predicted Medicine:</b></p>
+                    </div>
+                    <div class="col-md-8">
+                        <p>{{medicine_identified}}</p>
+                    </div>
+                </div>
+                {% if pt_record.disease_identified == 'Malaria' %}
+                    <img src="{% static 'prescription/img/malaria_decision.png' %}" height="670" width="670">
+                {% else %}
+                    <img src="{% static 'prescription/img/tuberculosis_decision.png' %}" height="670" width="670">
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

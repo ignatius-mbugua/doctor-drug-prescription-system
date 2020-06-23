@@ -1,0 +1,16 @@
+{% extends "users/baseauthentication.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="card card-login mx-auto mt-5">
+        <div class="card-header">
+            Logout
+        </div>
+        <div class="card-body">
+            <h2>You have been logged out</h2>
+            <div class="text-center">
+                <a class="d-block small mt-3" href="{% url 'login' %}">Log in again</a>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

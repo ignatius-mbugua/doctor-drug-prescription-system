@@ -1,0 +1,20 @@
+{% extends "users/baseauthentication.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="card card-login mx-auto mt-5">
+        <div class="card-header">
+            Login
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {{form|crispy}}
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+            </form>
+            <div class="text-center">
+                <a class="d-block small mt-3" href="{% url 'register' %}">Register an Account</a>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

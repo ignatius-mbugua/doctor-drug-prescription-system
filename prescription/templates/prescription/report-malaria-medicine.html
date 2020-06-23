@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Drug Prescription</title>
+    <!-- Bootstrap core CSS-->
+    <link href="{% static 'prescription/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Custom fonts -->
+    <link href="{% static 'prescription/vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    <!-- DataTables-->
+    <link href=" {% static 'prescription/vendor/datatables/dataTables.bootstrap4.css' %}" rel="stylesheet">
+    <!-- Custom styles -->
+    <link href="{% static 'prescription/css/sb-admin.css' %}" rel="stylesheet">
+</head>
+
+<body class="" id="">
+    <h3>Table:</h3>
+    <button class="btn btn-primary pull-right" onclick="window.print()"> Print Report </button>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>Malaria Medicine</th>
+            <th>Total</th>
+        </tr>
+        <tr>
+            <td>Doxycycline</td>
+            <td>{{doxycycline_count}}</td>
+        </tr>
+        <tr>
+            <td>Lariam</td>
+            <td>{{lariam_count}}</td>
+        </tr>
+        <tr>
+            <td>Malrone</td>
+            <td>{{malarone_count}}</td>
+        </tr>
+    </table>
+
+    <br>
+    <canvas id="malaria_pie_chart" width="50" height="20"></canvas>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{% static 'prescription/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'prescription/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="{% static 'prescription/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+    <!-- Page level plugin JavaScript-->
+    <script src="{% static 'prescription/vendor/datatables/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'prescription/vendor/datatables/dataTables.bootstrap4.js' %}"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="{% static 'prescription/js/sb-admin.min.js' %}"></script>
+    <!-- Custom scripts for this page-->
+    <script src="{% static 'prescription/js/sb-admin-datatables.min.js' %}"></script>
+    <script src="{% static 'prescription/vendor/chart.js/Chart.bundle.min.js' %}"></script>
+    <script src="{% static 'prescription/vendor/chart.js/Chart.min.js' %}"></script>
+    <script>
+        //fetch data and initialize arrays
+        var malaria_url_data = "{% url 'malaria-medicine-data' %}"
+        var malaria_count = [];
+
+        $(document).ready(function(){
+            //Malaria Medicine Pie Chart
+            $.ajax({
+                method: "GET",
+                url: malaria_url_data,
+                success: function(data){
+                    malaria_count = data.malaria_count
+                    malariaChart()
+                },
+                error: function(error_data){
+                    console.log("Error:")
+                    console.log(error_data)
+                }
+            })
+
+            function malariaChart(){
+                new Chart(document.getElementById("malaria_pie_chart"), {
+                    type: 'pie',
+                    data: {
+                        labels: ["Doxycycline", "Lariam", "Malarone"],
+                        datasets: [{
+                            label: "Malaria Medicine",
+                            backgroundColor: ["#3e95cd", "#8e5ea2", "#000000"],
+                            data: malaria_count
+                        }]
+                    },
+                    options: {
+                        title: {
+                            display: true,
+                            text: 'Distribution of Tuberculosis Medicine Given'
+                        }
+                    }
+                });
+            }
+        });
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,18 @@
+{% extends "prescription/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <!-- Prescribe Medicine Card -->
+    <div class="card mx-auto">
+        <div class="card-header">
+            Add Patient
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {{patient_form|crispy}}
+                <button type="submit" class="btn btn-primary btn-block mt-3">Add</button>
+            </form>
+        </div>
+    </div>
+{% endblock content %}
